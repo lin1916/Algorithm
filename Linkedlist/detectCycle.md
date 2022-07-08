@@ -29,5 +29,35 @@
 - 链表中节点的数目范围在范围 `[0, 104]` 内
 - `-105 <= Node.val <= 105`
 - `pos` 的值为 `-1` 或者链表中的一个有效索引
- 
+ 
+代码：
 
+方法一：快慢指针
+```cpp
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head)
+    {
+        
+        ListNode *fast = head, *slow = head;    // 定义两个快慢指针
+        while (fast != nullptr && fast->next != nullptr)
+        {
+            fast = fast->next->next;    // 快指针走两步
+            slow = slow->next;          // 慢指针走一步
+            if (fast == slow)           // 当快指针不为空且两指针相遇时，必定在环中相遇
+            {
+                ListNode *temp = head;  // 定义一个临时指针指向头节点
+                int index = 0;
+                while (slow != temp)    // 慢指针和临时指针必在入环节点相遇
+                {
+                    slow = slow->next;  // 未相遇时执行操作
+                    temp = temp->next;
+                    index++;            // 入环节点索引加一
+                }
+                return temp;
+            }
+        }
+        return nullptr;
+    }
+};
+```
